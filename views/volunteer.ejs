@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Volunteer Application</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="volunteer-page">
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <h2>Really Real Education</h2>
+    <div>
+        <a href="/">Return to Home Page</a>
+    </div>
+</nav>
+
+<!-- FORM CONTAINER -->
+<div class="container">
+
+    <div class="top-bar">
+        <h1>Volunteer Application Form</h1>
+    </div>
+
+    <form action="/submit" method="POST" enctype="multipart/form-data">
+
+        <div class="row">
+            <input type="text" name="fName" placeholder="First Name*" required>
+            <input type="text" name="lName" placeholder="Last Name">
+        </div>
+
+        <div class="row">
+            <input type="email" name="email" placeholder="Email*" required>
+            <input type="text" name="telephone" placeholder="Contact Number*" required>
+        </div>
+
+        <select name="volunteerType" id="type" required onchange="toggleFields()">
+            <option value="">Select Role</option>
+            <option value="technical">Technical</option>
+            <option value="non-technical">Non-Technical</option>
+        </select>
+
+        <input type="text" name="contribution" placeholder="How would you like to contribute?*" required>
+
+        <!-- TECHNICAL FIELDS -->
+        <div id="techFields" class="hidden">
+            <input type="file" name="resume"  accept="application/pdf" required>
+            <input type="text" name="github" placeholder="GitHub Profile*" required>
+            <input type="text" name="linkedin" placeholder="LinkedIn Profile*" required>
+            <input type="text" name="portfolio" placeholder="Portfolio (Optional)">
+        </div>
+        
+
+        <button type="submit" class="btn-primary">Submit Application</button>
+    </form>
+
+</div>
+
+<script>
+function toggleFields() {
+    const type = document.getElementById("type").value;
+    const techFields = document.getElementById("techFields");
+    const isTechnical = type === "technical";
+
+    techFields.classList.toggle("hidden", !isTechnical);
+
+    // Enable/disable required based on visibility
+    techFields.querySelectorAll("input").forEach(input => {
+        if (isTechnical) {
+            input.setAttribute("required", true);
+        } else {
+            input.removeAttribute("required");
+        }
+    });
+}
+</script>
+
+</body>
+</html>
+

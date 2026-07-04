@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard — Applicants</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0f1117;
+      --surface:   #181c27;
+      --border:    #252a38;
+      --accent:    #4f8ef7;
+      --accent-dim:#1e3a6e;
+      --success:   #2ecc8a;
+      --danger:    #e05c5c;
+      --text-1:    #e8eaf0;
+      --text-2:    #8891a8;
+      --text-3:    #4a5168;
+      --mono:      'IBM Plex Mono', monospace;
+      --sans:      'Inter', sans-serif;
+      --radius:    6px;
+    }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text-1);
+      min-height: 100vh;
+    }
+
+    /* ── Top bar ── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 40px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+    }
+
+    .brand-dot {
+      width: 8px; height: 8px;
+      background: var(--success);
+      border-radius: 50%;
+      animation: pulse 2.2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    .header-meta {
+      font-size: 0.78rem;
+      color: var(--text-2);
+      font-family: var(--mono);
+    }
+
+    /* ── Main ── */
+    main {
+      max-width: 1100px;
+      margin: 48px auto;
+      padding: 0 24px;
+    }
+
+    .page-heading {
+      margin-bottom: 32px;
+    }
+
+    .page-heading h1 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--text-1);
+    }
+
+    .page-heading p {
+      font-size: 0.875rem;
+      color: var(--text-2);
+      margin-top: 6px;
+    }
+
+    /* ── Stats row ── */
+    .stats {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 24px;
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .stat-label {
+      font-size: 0.72rem;
+      font-family: var(--mono);
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: 600;
+      font-family: var(--mono);
+      color: var(--accent);
+    }
+
+    /* ── Table card ── */
+    .table-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .table-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .table-title {
+      font-size: 0.8rem;
+      font-family: var(--mono);
+      color: var(--text-2);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* ── Table ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead th {
+      padding: 12px 20px;
+      text-align: left;
+      font-size: 0.72rem;
+      font-family: var(--mono);
+      font-weight: 600;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s ease;
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+
+    tbody tr:hover { background: rgba(79,142,247,0.04); }
+
+    td {
+      padding: 16px 20px;
+      font-size: 0.875rem;
+      vertical-align: middle;
+    }
+
+    /* ID cell */
+    .td-id {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--text-3);
+    }
+
+    /* Name */
+    .td-name {
+      font-weight: 500;
+      color: var(--text-1);
+    }
+
+    /* Email / contact */
+    .td-meta {
+      color: var(--text-2);
+      font-size: 0.82rem;
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-size: 0.72rem;
+      font-family: var(--mono);
+      letter-spacing: 0.04em;
+      font-weight: 600;
+      text-transform: capitalize;
+    }
+
+    .badge-technical {
+      background: var(--accent-dim);
+      color: var(--accent);
+    }
+
+    .badge-non-technical {
+      background: rgba(46,204,138,0.12);
+      color: var(--success);
+    }
+
+    /* Resume link */
+    .resume-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: var(--radius);
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-family: var(--mono);
+      text-decoration: none;
+      transition: background 0.15s, border-color 0.15s;
+      cursor: pointer;
+    }
+
+    .resume-link:hover {
+      background: var(--accent-dim);
+      border-color: var(--accent);
+    }
+
+    .resume-icon {
+      width: 13px; height: 13px;
+      fill: currentColor;
+    }
+
+    /* No resume */
+    .no-resume {
+      font-size: 0.78rem;
+      font-family: var(--mono);
+      color: var(--text-3);
+    }
+
+    /* ── Expandable detail row ── */
+    tbody tr.main-row {
+      cursor: pointer;
+    }
+
+    tbody tr.main-row td:first-child::before {
+      content: '▸';
+      display: inline-block;
+      margin-right: 8px;
+      font-size: 0.7rem;
+      color: var(--text-3);
+      transition: transform 0.2s ease;
+    }
+
+    tbody tr.main-row.open td:first-child::before {
+      transform: rotate(90deg);
+      color: var(--accent);
+    }
+
+    tr.detail-row { display: none; }
+    tr.detail-row.open { display: table-row; }
+
+    .detail-panel {
+      background: rgba(79,142,247,0.03);
+      border-top: 1px solid var(--border);
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 20px 28px;
+    }
+
+    .detail-field {}
+
+    .detail-label {
+      font-size: 0.68rem;
+      font-family: var(--mono);
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 5px;
+    }
+
+    .detail-value {
+      font-size: 0.83rem;
+      color: var(--text-2);
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    .detail-value.empty { color: var(--text-3); font-style: italic; }
+
+    .ext-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.83rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .ext-link:hover { text-decoration: underline; }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 72px 24px;
+      color: var(--text-3);
+    }
+
+    .empty-state p {
+      margin-top: 12px;
+      font-size: 0.85rem;
+      font-family: var(--mono);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+      header { padding: 14px 20px; }
+      main   { margin: 28px auto; padding: 0 16px; }
+      .hide-mobile { display: none; }
+      td, th { padding: 12px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <span class="brand-dot"></span>
+      ADMIN PANEL
+    </div>
+    <div class="header-meta">Volunteer Applications</div>
+  </header>
+
+  <main>
+
+    <div class="page-heading">
+      <h1>Applicants</h1>
+      <p>All submitted volunteer applications. Click "View Resume" to open a PDF in the browser.</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-label">Total Applicants</div>
+        <div class="stat-value"><%= applicants.length %></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Technical</div>
+        <div class="stat-value">
+          <%= applicants.filter(a => a.volunteer_type === 'technical').length %>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Non-Technical</div>
+        <div class="stat-value">
+          <%= applicants.filter(a => a.volunteer_type !== 'technical').length %>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">With Resume</div>
+        <div class="stat-value">
+          <%= applicants.filter(a => a.resume).length %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-card">
+      <div class="table-toolbar">
+        <span class="table-title">All Records</span>
+      </div>
+
+      <% if (applicants.length === 0) { %>
+        <div class="empty-state">
+          <!-- Inbox icon -->
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#4a5168" stroke-width="1.5">
+            <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>
+            <path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/>
+          </svg>
+          <p>No applications yet.</p>
+        </div>
+
+      <% } else { %>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th class="hide-mobile">Email</th>
+              <th class="hide-mobile">Contact</th>
+              <th>Type</th>
+              <th>Resume</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% applicants.forEach((applicant, i) => { %>
+
+              <!-- Main row — click to expand -->
+              <tr class="main-row" onclick="toggleRow(<%= i %>)">
+                <td class="td-id"><%= applicant.id %></td>
+
+                <td class="td-name">
+                  <%= applicant.first_name %> <%= applicant.last_name %>
+                </td>
+
+                <td class="td-meta hide-mobile"><%= applicant.email %></td>
+
+                <td class="td-meta hide-mobile"><%= applicant.mobile || '—' %></td>
+
+                <td>
+                  <span class="badge <%= applicant.volunteer_type === 'technical' ? 'badge-technical' : 'badge-non-technical' %>">
+                    <%= applicant.volunteer_type %>
+                  </span>
+                </td>
+
+                <td onclick="event.stopPropagation()">
+                  <% if (applicant.resume) { %>
+                    <a class="resume-link" href="/resume/<%= applicant.id %>" target="_blank" rel="noopener">
+                      <svg class="resume-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/>
+                      </svg>
+                      View Resume
+                    </a>
+                  <% } else { %>
+                    <span class="no-resume">— not submitted</span>
+                  <% } %>
+                </td>
+              </tr>
+
+              <!-- Detail row — hidden until expanded -->
+              <tr class="detail-row" id="detail-<%= i %>">
+                <td colspan="6" class="detail-panel">
+                  <div class="detail-grid">
+
+                    <div class="detail-field">
+                      <div class="detail-label">Contribution</div>
+                      <div class="detail-value">
+                        <%= applicant.contribution ? applicant.contribution : '<span class="empty">Not provided</span>' %>
+                      </div>
+                    </div>
+
+                    <div class="detail-field">
+                      <div class="detail-label">GitHub</div>
+                      <div class="detail-value">
+                        <% if (applicant.github) { %>
+                          <a class="ext-link" href="<%= applicant.github %>" target="_blank" rel="noopener">
+                            ↗ <%= applicant.github %>
+                          </a>
+                        <% } else { %>
+                          <span class="empty">—</span>
+                        <% } %>
+                      </div>
+                    </div>
+
+                    <div class="detail-field">
+                      <div class="detail-label">LinkedIn</div>
+                      <div class="detail-value">
+                        <% if (applicant.linkedin) { %>
+                          <a class="ext-link" href="<%= applicant.linkedin %>" target="_blank" rel="noopener">
+                            ↗ <%= applicant.linkedin %>
+                          </a>
+                        <% } else { %>
+                          <span class="empty">—</span>
+                        <% } %>
+                      </div>
+                    </div>
+
+                    <div class="detail-field">
+                      <div class="detail-label">Portfolio</div>
+                      <div class="detail-value">
+                        <% if (applicant.portfolio) { %>
+                          <a class="ext-link" href="<%= applicant.portfolio %>" target="_blank" rel="noopener">
+                            ↗ <%= applicant.portfolio %>
+                          </a>
+                        <% } else { %>
+                          <span class="empty">—</span>
+                        <% } %>
+                      </div>
+                    </div>
+
+                  </div>
+                </td>
+              </tr>
+
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+    </div>
+
+  </main>
+
+  <script>
+    function toggleRow(i) {
+      const mainRow  = document.querySelectorAll('.main-row')[i];
+      const detailRow = document.getElementById('detail-' + i);
+      const isOpen = detailRow.classList.contains('open');
+      mainRow.classList.toggle('open', !isOpen);
+      detailRow.classList.toggle('open', !isOpen);
+    }
+  </script>
+
+</body>
+</html>
