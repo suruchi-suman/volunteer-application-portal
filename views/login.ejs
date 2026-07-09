@@ -2,39 +2,66 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | Really Real Education</title>
     <link rel="stylesheet" href="/styles/styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body class="volunteer-page">
+<div class="page">
 
-<!-- NAVBAR -->
-<nav class="navbar">
-    <h2>Really Real Education</h2>
-</nav>
+  <header class="site-header">
+    <div class="site-header-inner">
+      <div class="brand">
+        <div class="brand-title">Really Real Education</div>
+        <div class="brand-tagline">
+          An Educational Initiative of
+          <a
+            href="https://jaltediyefoundation.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Jalte Diye Foundation</a
+          >
+        </div>
+      </div>
+      <nav class="site-nav">
+        <a href="https://reallyrealeducation.org/">Return to Site</a>
+      </nav>
+    </div>
+  </header>
 
-<!-- LOGIN CONTAINER -->
-<div class="container login-container">
+  <!-- LOGIN CONTAINER -->
+  <div class="container login-container">
 
     <div class="top-bar">
-        <h1>Admin Login</h1>
+      <h1>Admin Login</h1>
     </div>
 
     <p class="login-subtitle">Restricted access — authorised personnel only.</p>
 
     <form action="/admin/login" method="POST">
 
-        <label class="field-label" for="username">Email</label>
-        <input type="email" id="username" name="username" placeholder="admin@email.com" required>
+      <label class="field-label" for="username">Email</label>
+      <input type="email" id="username" name="username" placeholder="admin@email.com" required>
 
-        <label class="field-label" for="password">Password</label>
-        <input type="password" id="password" name="password" placeholder="••••••••" required>
+      <label class="field-label" for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="••••••••" required>
 
-        <button type="submit" class="btn-primary">Login</button>
+      <button type="submit" class="btn-primary">Login</button>
 
     </form>
 
-</div>
+  </div>
 
+  <footer class="footer">
+    <div>
+      Built by Jalte Diye Foundation for Learners at
+      reallyrealeducation.org.
+    </div>
+    <div class="fine-print">
+      You can subscribe to us on social media for updates.
+    </div>
+  </footer>
+
+</div>
 </body>
 </html>
