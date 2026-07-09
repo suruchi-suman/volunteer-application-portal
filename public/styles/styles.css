@@ -457,7 +457,7 @@
   color: var(--muted);
   font-size: 0.98rem;
   margin-top: 10px;
-  justify-content: center;
+  text-align: center;
 }
 
 /* ============================================================
