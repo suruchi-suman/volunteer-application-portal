@@ -110,6 +110,59 @@
     }
 }
 
+/* FOOTER (matches main site footer) */
+.volunteer-page .footer {
+    border-top: 1px solid rgba(31, 41, 51, 0.08);
+    padding: 30px 20px 50px;
+    text-align: center;
+    color: #5b6572;
+    font-weight: 300;
+}
+
+.volunteer-page .footer a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.volunteer-page .footer-links {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 12px;
+    font-weight: 500;
+}
+
+.volunteer-page .social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    transition: opacity 0.2s ease;
+}
+
+.volunteer-page .social-link:hover {
+    opacity: 0.85;
+}
+
+.volunteer-page .social-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.volunteer-page .fine-print {
+    font-size: 0.85rem;
+    color: #5b6572;
+    margin-top: 10px;
+}
+
 /* NAVBAR (legacy — kept in case still referenced elsewhere) */
 .volunteer-page .navbar {
     display: flex;
