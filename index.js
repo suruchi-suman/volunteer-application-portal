@@ -20,7 +20,7 @@ env.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// PostgreSQL
+
 // PostgreSQL
 const db = new pg.Pool({
     connectionString: process.env.DATABASE_URL,
